@@ -22,7 +22,7 @@ namespace WebApplicationSafeWeb
             SqlConnection conexao = new SqlConnection(strcon);
             try
             {
-                SqlCommand cmd = new SqlCommand("select nome , password , perfil from tbl_usuarios where nome = @nome", conexao);
+                SqlCommand cmd = new SqlCommand("select Id , nome , password , perfil from tbl_usuarios where nome = @nome", conexao);
 
                 cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = txtLogin.Text.Trim();
                 SqlDataReader dr = null;
@@ -36,11 +36,13 @@ namespace WebApplicationSafeWeb
 
                     var password = "";
                     var perfil = "";
+                    var id_usuario = "";
 
                     while (dr.Read())
                     {
                         password = dr["password"].ToString();
                         perfil = dr["perfil"].ToString();
+                        id_usuario = dr["Id"].ToString();
                     }
 
                     if(password == txtPassword.Text)
@@ -48,7 +50,7 @@ namespace WebApplicationSafeWeb
                         Session["logado"] = "true";
                         Session["nome"] = txtLogin.Text;
                         Session["perfil"] = perfil.ToString();
-
+                        Session["id_usuario"] = id_usuario;
                         Response.Redirect("Default.aspx");
                     }
                 }

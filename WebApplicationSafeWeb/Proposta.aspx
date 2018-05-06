@@ -124,7 +124,7 @@
 
             <div class="form-group">
                 <label for="InputDesc">Descrição</label>
-                <asp:TextBox ID="txtDescricao" TextMode="MultiLine" CssClass="form-control" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtDescricao" TextMode="MultiLine" CssClass="form-control" runat="server" Height="225px"></asp:TextBox>
             </div>
 
             <asp:Button ID="btnEnviar" runat="server" CssClas="btn btn-primary btn-block" Text="Enviar dados" OnClick="btnEnviar_Click" />

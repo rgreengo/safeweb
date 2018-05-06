@@ -53,7 +53,7 @@ namespace WebApplicationSafeWeb
                             txtDescricao.Text = dr["descricao"].ToString();
 
 
-                            chkAprovada.Checked = Convert.ToBoolean(dr["aprovada"].ToString());
+                            
 
                             var dataProposta = dr["data_proposta"].ToString();
 
@@ -140,7 +140,7 @@ namespace WebApplicationSafeWeb
 
 
                 cmd.Parameters.Add("@data_proposta", SqlDbType.VarChar).Value = txtDataProposta.Text;
-                cmd.Parameters.Add("@aprovada", SqlDbType.Bit).Value = chkAprovada.Checked;
+                
 
                 cmd.Parameters.Add("@valor", SqlDbType.VarChar).Value = txtValor.Text;
 
@@ -209,7 +209,7 @@ namespace WebApplicationSafeWeb
             SqlConnection conexao = new SqlConnection(strcon);
             try
             {
-                SqlCommand cmd = new SqlCommand("Update tbl_propostas2 set categoria = @categoria , fornecedor = @fornecedor , data_proposta = data_proposta , aprovada = @aprovada , valor = @valor , descricao = @descricao , arquivo = @arquivo , vencida = @vencida , nome = @nome where Id = @id", conexao);
+                SqlCommand cmd = new SqlCommand("Update tbl_propostas2 set categoria = @categoria , fornecedor = @fornecedor , data_proposta = data_proposta , valor = @valor , descricao = @descricao , arquivo = @arquivo , vencida = @vencida , nome = @nome where Id = @id", conexao);
 
 
                 cmd.Parameters.Add("@categoria", SqlDbType.VarChar).Value = ddlCategorias.SelectedValue;
@@ -218,7 +218,12 @@ namespace WebApplicationSafeWeb
 
 
                 cmd.Parameters.Add("@data_proposta", SqlDbType.VarChar).Value = txtDataProposta.Text;
-                cmd.Parameters.Add("@aprovada", SqlDbType.Bit).Value = chkAprovada.Checked;
+
+
+
+                //insere na tabela acao
+                SqlCommand cmdAcao = new SqlCommand("update tbl_proposta_aprovada set id_usuario = @id_usuario , data_aprovacao = @data_aprovacao , acao_realizada = @acao_realizada where id_proposta = @id_proposta", conexao);
+                cmdAcao.Parameters.Add("@id_usuario", SqlDbType.Int).Value = "";
 
                 cmd.Parameters.Add("@valor", SqlDbType.VarChar).Value = txtValor.Text;
 
