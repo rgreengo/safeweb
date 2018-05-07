@@ -24,8 +24,7 @@
                                 <th>Nome</th>
                                 <th>Fornecedor</th>
                                 <th>Data</th>
-                                <th>Valor</th>
-                                <th>Aprovada</th>
+                                <th>Valor</th>                                
                                 <th>Editar</th>
                                 <th>Excluir</th>
                                 <th>Arquivo Proposta</th>
@@ -38,8 +37,7 @@
                         <td><%# DataBinder.Eval(Container.DataItem, "NomeProposta") %></td>
                         <td><%# DataBinder.Eval(Container.DataItem, "nome") %></td>
                         <td><%# DataBinder.Eval(Container.DataItem, "data_proposta") %></td>
-                        <td><%# DataBinder.Eval(Container.DataItem, "valor") %></td>
-                        <td><%# DataBinder.Eval(Container.DataItem, "aprovada") %></td>
+                        <td><%# DataBinder.Eval(Container.DataItem, "valor") %></td>                       
                         <td>
                             <a href="<%# "Proposta.aspx?id=" + DataBinder.Eval(Container.DataItem, "id")%>">Editar</a></td>
                         <td>
@@ -60,7 +58,7 @@
             </asp:Repeater>
 
             <asp:SqlDataSource ID="SqlDataSourceProposta" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-                SelectCommand="SELECT tbl_categorias.descricao, tbl_fornecedores.nome, tbl_propostas2.Id, tbl_propostas2.data_proposta, tbl_propostas2.aprovada, tbl_propostas2.valor, tbl_propostas2.descricao AS descricao, tbl_propostas2.arquivo, tbl_propostas2.vencida, tbl_propostas2.nome AS NomeProposta FROM tbl_fornecedores INNER JOIN tbl_propostas2 ON tbl_fornecedores.Id = tbl_propostas2.fornecedor INNER JOIN tbl_categorias ON tbl_propostas2.categoria = tbl_categorias.Id"></asp:SqlDataSource>
+                SelectCommand="SELECT tbl_categorias.descricao, tbl_fornecedores.nome, tbl_propostas2.Id, tbl_propostas2.data_proposta, tbl_propostas2.valor, tbl_propostas2.descricao AS descricao, tbl_propostas2.arquivo, tbl_propostas2.vencida, tbl_propostas2.nome AS NomeProposta FROM tbl_fornecedores INNER JOIN tbl_propostas2 ON tbl_fornecedores.Id = tbl_propostas2.fornecedor INNER JOIN tbl_categorias ON tbl_propostas2.categoria = tbl_categorias.Id"></asp:SqlDataSource>
 
         </div>
     </div>
@@ -118,7 +116,7 @@
 
 
             <div class="form-group" id="divVencida" runat="server">
-                <label for="InputAprovada">Vencida</label>
+                <label for="InputVencida">Vencida</label>
                 <asp:CheckBox ID="chkVencida" runat="server" />
             </div>
 

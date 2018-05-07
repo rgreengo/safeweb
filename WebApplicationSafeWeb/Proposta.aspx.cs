@@ -37,7 +37,7 @@ namespace WebApplicationSafeWeb
                     SqlConnection conexao = new SqlConnection(strcon);
                     try
                     {
-                        SqlCommand cmd = new SqlCommand("SELECT tbl_categorias.descricao, tbl_fornecedores.nome, tbl_propostas2.Id, tbl_propostas2.data_proposta, tbl_propostas2.aprovada, tbl_propostas2.valor, tbl_propostas2.descricao AS descricao, tbl_propostas2.arquivo, tbl_propostas2.vencida, tbl_propostas2.nome AS NomeProposta FROM tbl_fornecedores INNER JOIN tbl_propostas2 ON tbl_fornecedores.Id = tbl_propostas2.fornecedor INNER JOIN tbl_categorias ON tbl_propostas2.categoria = tbl_categorias.Id where tbl_propostas2.Id = @id", conexao);
+                        SqlCommand cmd = new SqlCommand("SELECT tbl_categorias.descricao, tbl_fornecedores.nome, tbl_propostas2.Id, tbl_propostas2.data_proposta, tbl_propostas2.valor, tbl_propostas2.descricao AS descricao, tbl_propostas2.arquivo, tbl_propostas2.vencida, tbl_propostas2.nome AS NomeProposta FROM tbl_fornecedores INNER JOIN tbl_propostas2 ON tbl_fornecedores.Id = tbl_propostas2.fornecedor INNER JOIN tbl_categorias ON tbl_propostas2.categoria = tbl_categorias.Id where tbl_propostas2.Id = @id", conexao);
                         cmd.Parameters.Add("@id", SqlDbType.Int).Value = Request.QueryString["id"];
                         SqlDataReader dr = null;
 
@@ -45,16 +45,19 @@ namespace WebApplicationSafeWeb
                         dr = cmd.ExecuteReader();
 
 
+                        var nivelQueAprovou = "";
+                        var idProposta = "";
+                        //verifica se analista financeiro aprovou
 
+
+                        //SqlCommand cmdPropostaHistorico = new SqlCommand("select tbl_usuarios.perfil , tbl_perfis.tipo  from tbl_proposta_aprovada join tbl_usuarios on tbl_proposta_aprovada.id_usuario = tbl_usuarios.Id join tbl_perfis on tbl_usuarios.perfil = tbl_perfis.Id ")
+                        
                         while (dr.Read())
                         {
                             txtValor.Text = dr["valor"].ToString();
                             txtNome.Text = dr["NomeProposta"].ToString();
                             txtDescricao.Text = dr["descricao"].ToString();
-
-
-                            
-
+                            idProposta = dr["Id"].ToString();
                             var dataProposta = dr["data_proposta"].ToString();
 
                         }
@@ -83,12 +86,12 @@ namespace WebApplicationSafeWeb
                     SqlConnection conexao = new SqlConnection(strcon);
                     try
                     {
-                        SqlCommand cmd = new SqlCommand("delete from tbl_propostas where id = @id", conexao);
+                        SqlCommand cmd = new SqlCommand("delete from tbl_propostas2 where id = @id", conexao);
                         cmd.Parameters.Add("@id", SqlDbType.Int).Value = Request.QueryString["excluir"];
                         conexao.Open();
                         cmd.ExecuteNonQuery();
 
-                        Response.Redirect("Propostas.aspx?sucess=true");
+                        Response.Redirect("Proposta.aspx?sucess=true");
                     }
 
                     catch (Exception ex)
@@ -131,15 +134,15 @@ namespace WebApplicationSafeWeb
             SqlConnection conexao = new SqlConnection(strcon);
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT into tbl_propostas2 (categoria , fornecedor , data_proposta , aprovada , valor , descricao , arquivo , vencida , nome) VALUES (@categoria , @fornecedor , @data_proposta , @aprovada , @valor , @descricao , @arquivo , @vencida , @nome )", conexao);
+                SqlCommand cmd = new SqlCommand("INSERT into tbl_propostas2 (categoria , fornecedor , data_proposta , valor , descricao , arquivo , vencida , nome) VALUES (@categoria , @fornecedor , @data_proposta ,  @valor , @descricao , @arquivo , @vencida , @nome )", conexao);
 
 
-                cmd.Parameters.Add("@categoria", SqlDbType.VarChar).Value = ddlCategorias.SelectedValue;
+                cmd.Parameters.Add("@categoria", SqlDbType.Int).Value = ddlCategorias.SelectedValue;
 
-                cmd.Parameters.Add("@fornecedor", SqlDbType.VarChar).Value = ddlFornecedores.SelectedValue;
+                cmd.Parameters.Add("@fornecedor", SqlDbType.Int).Value = ddlFornecedores.SelectedValue;
 
 
-                cmd.Parameters.Add("@data_proposta", SqlDbType.VarChar).Value = txtDataProposta.Text;
+                cmd.Parameters.Add("@data_proposta", SqlDbType.DateTime).Value = txtDataProposta.Text;
                 
 
                 cmd.Parameters.Add("@valor", SqlDbType.VarChar).Value = txtValor.Text;
@@ -172,17 +175,30 @@ namespace WebApplicationSafeWeb
                 }
 
 
+                            
+                
 
-                cmd.Parameters.Add("@vencida", SqlDbType.Bit).Value = false;
+
+                cmd.Parameters.Add("@vencida", SqlDbType.Bit).Value = "false";
                 cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = txtNome.Text;
 
                 conexao.Open();
 
-                cmd.ExecuteNonQuery();
+                var id_inserido = 0;
+                
 
+                //cmd.ExecuteNonQuery();
 
+                //Cadastra no historico
+                //SqlCommand cmdHistorico = new SqlCommand("INSERT into tbl_proposta_aprovada (id_usuario , id_proposta , data_aprovacao , acao_realizada) VALUES (@id_usuario , @id_proposta , @data_aprovacao , @acao_realizada )", conexao);
 
+                //cmdHistorico.Parameters.Add("@id_usuario", SqlDbType.VarChar).Value = Session["id_usuario"].ToString();
+                //cmdHistorico.Parameters.Add("@id_proposta", SqlDbType.VarChar).Value = id_inserido.ToString();
 
+                //cmdHistorico.Parameters.Add("@data_aprovacao", SqlDbType.VarChar).Value = System.DateTime.Now.ToString();
+                //cmdHistorico.Parameters.Add("@acao_realizada", SqlDbType.Int).Value = ddlAcao.SelectedValue;
+
+                //cmdHistorico.ExecuteNonQuery();
 
                 Response.Redirect("Proposta.aspx?sucess=true");
 
