@@ -37,7 +37,7 @@ namespace WebApplicationSafeWeb
                     SqlConnection conexao = new SqlConnection(strcon);
                     try
                     {
-                        SqlCommand cmd = new SqlCommand("SELECT tbl_propostas2.acao , tbl_propostas2.categoria ,tbl_propostas2.fornecedor, tbl_categorias.descricao, tbl_fornecedores.nome, tbl_propostas2.Id, tbl_propostas2.data_proposta, tbl_propostas2.valor, tbl_propostas2.descricao AS descricao, tbl_propostas2.arquivo, tbl_propostas2.vencida, tbl_propostas2.nome AS NomeProposta FROM tbl_fornecedores INNER JOIN tbl_propostas2 ON tbl_fornecedores.Id = tbl_propostas2.fornecedor INNER JOIN tbl_categorias ON tbl_propostas2.categoria = tbl_categorias.Id where tbl_propostas2.Id = @id", conexao);
+                        SqlCommand cmd = new SqlCommand("SELECT tbl_usuarios.perfil as perfilID,tbl_propostas2.acao , tbl_propostas2.categoria ,tbl_propostas2.fornecedor, tbl_categorias.descricao, tbl_fornecedores.nome, tbl_propostas2.Id, tbl_propostas2.data_proposta, tbl_propostas2.valor, tbl_propostas2.descricao AS descricao, tbl_propostas2.arquivo, tbl_propostas2.vencida, tbl_propostas2.nome AS NomeProposta FROM tbl_fornecedores INNER JOIN tbl_propostas2 ON tbl_fornecedores.Id = tbl_propostas2.fornecedor INNER JOIN tbl_categorias ON tbl_propostas2.categoria = tbl_categorias.Id  INNER JOIN tbl_usuarios ON tbl_propostas2.usuario = tbl_usuarios.Id where tbl_propostas2.Id = @id", conexao);
                         cmd.Parameters.Add("@id", SqlDbType.Int).Value = Request.QueryString["id"];
                         SqlDataReader dr = null;
 
@@ -51,8 +51,8 @@ namespace WebApplicationSafeWeb
                         var fornecedor_id = 0;
                         var categoria_id = 0;
                         var acao_id = 0;
+                        var perfil_id = 0;
 
-                        //SqlCommand cmdPropostaHistorico = new SqlCommand("select tbl_usuarios.perfil , tbl_perfis.tipo  from tbl_proposta_aprovada join tbl_usuarios on tbl_proposta_aprovada.id_usuario = tbl_usuarios.Id join tbl_perfis on tbl_usuarios.perfil = tbl_perfis.Id ")
 
                         while (dr.Read())
                         {
@@ -64,19 +64,31 @@ namespace WebApplicationSafeWeb
                             fornecedor_id = Convert.ToInt32(dr["fornecedor"]);
                             categoria_id = Convert.ToInt32(dr["categoria"]);
                             acao_id = Convert.ToInt32(dr["acao"]);
+                            perfil_id = Convert.ToInt32(dr["perfilID"]);
+                        }
+
+                        if (perfil_id == 2 && acao_id == 1)//aprovada pelo analista financeiro nao pode ser editada
+                        {
+                            //lblInfo.Visible = true;
+                            //lblInfo.Text = "Proposta aprovada pelo Analista financeiro - edição proíbida";
+                            Response.Write("<script>alert('Proposta aprovada pelo Analista financeiro - edição proíbida');</script>");
+                            formCadastro.Visible = false;
+                        }
+                        else
+                        {
+                            lblID.Text = idProposta;
+
+                            ddlFornecedores.SelectedIndex = Convert.ToInt32(fornecedor_id) - 1;
+                            ddlCategorias.SelectedIndex = Convert.ToInt32(categoria_id) - 1;
+                            ddlAcao.SelectedIndex = Convert.ToInt32(acao_id) - 1;
+
+                            lblID.Visible = false;
+                            divVencida.Visible = false;
+                            divData.Visible = false;
+                            formCadastro.Visible = true;
                         }
 
 
-                        lblID.Text = idProposta;
-
-                        ddlFornecedores.SelectedIndex = Convert.ToInt32(fornecedor_id) - 1;
-                        ddlCategorias.SelectedIndex = Convert.ToInt32(categoria_id) - 1;
-                        ddlAcao.SelectedIndex = Convert.ToInt32(acao_id) - 1;
-
-                        lblID.Visible = false;
-                        divVencida.Visible = false;
-                        divData.Visible = false;
-                        formCadastro.Visible = true;
 
                     }
                     catch (Exception ex)
