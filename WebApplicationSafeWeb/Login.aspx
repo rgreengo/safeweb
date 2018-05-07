@@ -12,8 +12,7 @@
     <title>SafeWeb - LoginPage</title>
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Custom fonts for this template-->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet" />
 </head>
@@ -33,7 +32,7 @@
                         <label for="exampleInputPassword1">Password</label>
                         <asp:TextBox ID="txtPassword" CssClass="form-control" TextMode="Password" runat="server"></asp:TextBox>
                     </div>
-                    <asp:Button ID="btnEnviar" runat="server" CssClass="btn btn-primary btn-block" Text="Login" OnClick="btnEnviar_Click" />                    
+                    <asp:Button ID="btnEnviar" runat="server" CssClass="btn btn-primary btn-block" Text="Login" OnClick="btnEnviar_Click" />
                 </form>
                 <asp:Label ID="lblInfo" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
                 <asp:SqlDataSource ID="SqlDataSourceLogin" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT * FROM [tbl_usuarios]"></asp:SqlDataSource>

@@ -134,7 +134,7 @@ namespace WebApplicationSafeWeb
             SqlConnection conexao = new SqlConnection(strcon);
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT into tbl_propostas2 (categoria , fornecedor , data_proposta , valor , descricao , arquivo , vencida , nome) VALUES (@categoria , @fornecedor , @data_proposta ,  @valor , @descricao , @arquivo , @vencida , @nome )", conexao);
+                SqlCommand cmd = new SqlCommand("INSERT into tbl_propostas2 (categoria , fornecedor , data_proposta , valor , descricao , arquivo , vencida , nome) VALUES (@categoria , @fornecedor , @data_proposta ,  @valor , @descricao , @arquivo , @vencida , @nome ) SELECT SCOPE_IDENTITY() ", conexao);
 
 
                 cmd.Parameters.Add("@categoria", SqlDbType.Int).Value = ddlCategorias.SelectedValue;
@@ -184,21 +184,26 @@ namespace WebApplicationSafeWeb
 
                 conexao.Open();
 
-                var id_inserido = 0;
-                
 
-                //cmd.ExecuteNonQuery();
 
-                //Cadastra no historico
-                //SqlCommand cmdHistorico = new SqlCommand("INSERT into tbl_proposta_aprovada (id_usuario , id_proposta , data_aprovacao , acao_realizada) VALUES (@id_usuario , @id_proposta , @data_aprovacao , @acao_realizada )", conexao);
 
-                //cmdHistorico.Parameters.Add("@id_usuario", SqlDbType.VarChar).Value = Session["id_usuario"].ToString();
-                //cmdHistorico.Parameters.Add("@id_proposta", SqlDbType.VarChar).Value = id_inserido.ToString();
+                int id_inserido = Convert.ToInt32(cmd.ExecuteScalar());
 
-                //cmdHistorico.Parameters.Add("@data_aprovacao", SqlDbType.VarChar).Value = System.DateTime.Now.ToString();
-                //cmdHistorico.Parameters.Add("@acao_realizada", SqlDbType.Int).Value = ddlAcao.SelectedValue;
+                if(id_inserido > 0)
+                {
 
-                //cmdHistorico.ExecuteNonQuery();
+
+                    //Cadastra no historico
+                    SqlCommand cmdHistorico = new SqlCommand("INSERT into tbl_proposta_historico (id_usuario , id_proposta , data_aprovacao , acao_realizada) VALUES (@id_usuario , @id_proposta , @data_aprovacao , @acao_realizada )", conexao);
+
+                    cmdHistorico.Parameters.Add("@id_usuario", SqlDbType.Int).Value = Session["id_usuario"].ToString();
+                    cmdHistorico.Parameters.Add("@id_proposta", SqlDbType.Int).Value = id_inserido.ToString();
+
+                    cmdHistorico.Parameters.Add("@data_aprovacao", SqlDbType.DateTime).Value = System.DateTime.Now.ToString();
+                    cmdHistorico.Parameters.Add("@acao_realizada", SqlDbType.Int).Value = ddlAcao.SelectedValue;
+
+                    cmdHistorico.ExecuteNonQuery();
+                }
 
                 Response.Redirect("Proposta.aspx?sucess=true");
 
