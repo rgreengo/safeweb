@@ -25,11 +25,11 @@
             <div class="card-body">
                 <form id="form1" runat="server">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
+                        <label for="exampleInput">Nome de usuário</label>
                         <asp:TextBox ID="txtLogin" CssClass="form-control" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
+                        <label for="exampleInputPassword">Senha</label>
                         <asp:TextBox ID="txtPassword" CssClass="form-control" TextMode="Password" runat="server"></asp:TextBox>
                     </div>
                     <asp:Button ID="btnEnviar" runat="server" CssClass="btn btn-primary btn-block" Text="Login" OnClick="btnEnviar_Click" />

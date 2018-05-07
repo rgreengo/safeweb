@@ -79,7 +79,7 @@
 
             <div class="form-group">
                 <label for="InputNascimento">Data Nascimento</label>
-                <asp:TextBox ID="txtNascimento" CssClass="form-control" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtNascimento" CssClass="form-control" TextMode="Date" runat="server"></asp:TextBox>
             </div>
 
 

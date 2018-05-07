@@ -70,6 +70,15 @@
                         <span class="nav-link-text">Propostas</span>
                     </a>
                 </li>
+
+
+
+                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <a class="nav-link" href="Historico.aspx">
+                        <i class="fa fa-fw fa-table"></i>
+                        <span class="nav-link-text">Histórico de propostas</span>
+                    </a>
+                </li>
                 
             </ul>
         </div>
