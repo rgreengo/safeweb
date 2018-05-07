@@ -50,7 +50,7 @@
 
             </asp:Repeater>
 
-            <asp:SqlDataSource ID="SqlDataSourceHistorico" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT tbl_proposta_historico.Id, tbl_proposta_historico.id_usuario, tbl_proposta_historico.id_proposta, tbl_proposta_historico.data_aprovacao, tbl_proposta_historico.acao_realizada, tbl_usuarios.nome, tbl_propostas2.descricao, tbl_propostas2.valor, tbl_acao.acao, tbl_propostas2.nome AS propostaNome FROM tbl_proposta_historico INNER JOIN tbl_usuarios ON tbl_proposta_historico.id_usuario = tbl_usuarios.Id INNER JOIN tbl_propostas2 ON tbl_proposta_historico.id_proposta = tbl_propostas2.Id AND tbl_usuarios.Id = tbl_propostas2.usuario INNER JOIN tbl_acao ON tbl_proposta_historico.acao_realizada = tbl_acao.Id"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSourceHistorico" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT tbl_proposta_historico.Id, tbl_proposta_historico.id_usuario, tbl_proposta_historico.id_proposta, tbl_proposta_historico.data_aprovacao, tbl_proposta_historico.acao_realizada, tbl_usuarios.nome, tbl_propostas2.descricao, tbl_propostas2.valor, tbl_acao.acao, tbl_propostas2.nome AS propostaNome, tbl_perfis.tipo FROM tbl_proposta_historico INNER JOIN tbl_usuarios ON tbl_proposta_historico.id_usuario = tbl_usuarios.Id INNER JOIN tbl_propostas2 ON tbl_proposta_historico.id_proposta = tbl_propostas2.Id AND tbl_usuarios.Id = tbl_propostas2.usuario INNER JOIN tbl_acao ON tbl_proposta_historico.acao_realizada = tbl_acao.Id INNER JOIN tbl_perfis ON tbl_usuarios.perfil = tbl_perfis.Id"></asp:SqlDataSource>
 
         </div>
     </div>
@@ -86,7 +86,10 @@
                 <asp:TextBox ID="txtDataModificacao" ReadOnly="true" CssClass="form-control" runat="server"></asp:TextBox>
             </div>
 
-
+            <div class="form-group">
+                <label for="InputData">Nível de quem alterou (Perfil)</label>
+                <asp:TextBox ID="txtPerfil" ReadOnly="true" CssClass="form-control" runat="server"></asp:TextBox>
+            </div>
 
 
         </div>
